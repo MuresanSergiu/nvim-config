@@ -12,7 +12,7 @@ return require('packer').startup(function (use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
     use {
-        'nvim-telescope/telescope.nvim', tag = '0.1.2',
+        'nvim-telescope/telescope.nvim', 
         -- or                            , branch = '0.1.x',
         requires = { {'nvim-lua/plenary.nvim'} }
     }
@@ -21,11 +21,11 @@ return require('packer').startup(function (use)
         run = ':TSUpdate'
     })
     use 'nvim-treesitter/nvim-treesitter-context'
-    use ({
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        after = "nvim-treesitter",
-        requires = "nvim-treesitter/nvim-treesitter",
-    })
+    -- use ({
+    --     "nvim-treesitter/nvim-treesitter-textobjects",
+    --     after = "nvim-treesitter",
+    --     requires = "nvim-treesitter/nvim-treesitter",
+    -- })
     -- use "nvim-treesitter/nvim-treesitter-angular"
     use('tpope/vim-fugitive')
     use ({
@@ -66,6 +66,7 @@ return require('packer').startup(function (use)
 
     -- Random themes if needed
     use 'navarasu/onedark.nvim'
+    use 'echasnovski/mini.ai'
     -- use({ 'rose-pine/neovim', as = 'rose-pine' })
     -- use 'tomasiser/vim-code-dark'
     -- use 'dunstontc/vim-vscode-theme'
