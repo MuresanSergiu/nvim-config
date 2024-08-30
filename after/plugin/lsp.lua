@@ -104,7 +104,7 @@ lsp.on_attach(function(client, bufnr)
         vim.lsp.buf.code_action({
             apply = true,
         })
-        print("Returned")
+        vim.defer_fn(function () vim.cmd('w') end, 2000)
     end, opts)
     vim.keymap.set({ 'n', 'x', 'v' }, '<leader>ci', function()
         -- local diags = vim.diagnostic.get(0)
@@ -149,11 +149,12 @@ lsp.on_attach(function(client, bufnr)
     end, opts)
     vim.keymap.set('n', '<leader>e', function() vim.diagnostic.open_float() end, opts)
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-    vim.keymap.set('n', '<C-n>',
-        function() vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR, wrap = true }) end)
-    vim.keymap.set('n', '<C-m>',
-        function() vim.diagnostic.goto_next({ severity = { min = vim.diagnostic.severity.WARN }, wrap = true }) end)
-    vim.keymap.set('n', '<leader>dd', vim.diagnostic.setqflist, {})
+    vim.keymap.set('n', '<C-n>', function() vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR, wrap = true }) end)
+    vim.keymap.set('n', '<C-m>', function() vim.diagnostic.goto_next({ severity = { min = vim.diagnostic.severity.WARN }, wrap = true }) end)
+    vim.keymap.set('n', '<leader>pe', function () vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR }) end, {})
+    vim.keymap.set('n', '<leader>pw', function () vim.diagnostic.setqflist() end, {})
+    vim.keymap.set('n', '<leader>cn', ':cn<CR>', {})
+    vim.keymap.set('n', '<leader>cp', ':cp<CR>', {})
 end)
 
 require('lspconfig').lua_ls.setup({
@@ -185,6 +186,16 @@ require('lspconfig').lua_ls.setup({
 })
 
 local lspconfig = require('lspconfig')
+lspconfig.pylsp.setup({
+    pylsp = {
+        plugins = {
+            pycodestyle = {
+                ignore = {'W391'},
+                maxLineLength = 100
+            }
+        }
+    }
+})
 lspconfig.emmet_language_server.setup({
     filetypes = { "html", "php" },
     init_options = {
@@ -193,6 +204,19 @@ lspconfig.emmet_language_server.setup({
     }
 })
 -- print(vim.inspect(capabilities))
+lspconfig.rust_analyzer.setup({
+    settings = {
+        ['rust-analyzer'] = {
+            checkOnSave = {
+                allFeatures = true,
+                overrideCommand = {
+                    'cargo', 'clippy', '--workspace', '--message-format=json',
+                    '--all-targets', '--all-features'
+                }
+            }
+        }
+    }
+})
 lsp.setup()
 --
 -- lspconfig.emmet_ls.setup({

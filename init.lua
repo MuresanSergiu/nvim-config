@@ -22,6 +22,9 @@ set.colorcolumn = "160"
 set.showtabline = 0
 
 vim.g.mapleader = ' '
+vim.g.db_ui_execute_on_save = false
+vim.g.db_ui_use_nerd_fonts = true
+vim.g.ftplugin_sql_omni_key = '<C-S>'
 -- vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 vim.keymap.set('n', 'Q', '<nop>')
 vim.keymap.set('i', '<Escape>', '<nop>')
@@ -53,8 +56,35 @@ vim.keymap.set({'c', 'i', 'n', 'x'}, '<Down>', '<nop>');
 
 vim.keymap.set('n', '<leader>/', ':let @/ = ""<CR>');
 vim.keymap.set('v', '<leader>sc', ':s/\\u/_\\l&/g<CR>:let @/ = ""<CR>');
+
+-- For making macro execution extra fast...
+-- Took wayyy too long to figure this out but, remember that when executing a command you remain in the same mode you are in so macros execute differently
+vim.keymap.set('n', '@', function ()
+    local buf = vim.api.nvim_get_current_buf()
+    local ft = vim.filetype.match({ buf = buf })
+    vim.bo.filetype = ""
+    vim.cmd("noautocmd norm! " .. (vim.v.count or 1) .. "@" .. vim.fn.getcharstr())
+    vim.bo.filetype = ft
+end, {})
+vim.keymap.set({'v', 'x'}, '@', function ()
+    local buf = vim.api.nvim_get_current_buf()
+    local ft = vim.filetype.match({ buf = buf })
+    local reg = vim.fn.getcharstr()
+    vim.bo.filetype = ""
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, false, true), "x", false)
+    vim.cmd("noautocmd \'<,\'>norm! " .. (vim.v.count or 1) .. "@" .. reg)
+    vim.bo.filetype = ft
+end, {})
+
 vim.cmd('ca S Subvert')
-vim.api.nvim_create_user_command('Build', '!rm extension.xpi; npx webpack && zip -r extension.xpi dist/ manifest.json && cp -f extension.xpi ~/Development/tor && cd collector/ && cargo run --bin scraper setup 8', {});
+vim.api.nvim_create_user_command('Build', '!rm extension.xpi; npx webpack && zip -r extension.xpi dist/ manifest.json && cp -f extension.xpi ~/Development/test', {});
+vim.api.nvim_create_user_command('W', 'w', {});
+vim.api.nvim_create_user_command('DBS', 'tabnew | DBUI', {})
+
+-- I don't care if this throws
+pcall(function ()
+    vim.api.nvim_del_user_command('EditQuery')
+end)
 -- vim.keymap.set('v', '<leader>cc', ':s/_\\w/\\u&/g<CR>:let @/ = ""<CR>');
 
 -- this_is_a_test
@@ -66,6 +96,13 @@ vim.api.nvim_create_user_command('Build', '!rm extension.xpi; npx webpack && zip
 -- vim.keymap.set('i', '[', '[]i');
 -- vim.keymap.set('i', '\'', '\'\'');
 -- vim.keymap.set('i', '"', '""');
+
+-- NOTE: donot trigger autocmd when executing macro
+-- https://www.reddit.com/r/neovim/comments/tsol2n/comment/i2ugipm/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+-- vim.cmd([[
+--   xnoremap @ :<C-U>execute "set ft= \| noautocmd '<,'>norm! " . v:count1 . "@" . getcharstr() . " \| filetype detect"<cr>
+--   nnoremap @ <cmd>execute "set ft= \| noautocmd norm! " . v:count1 . "@" . getcharstr() . " \| filetype detect"<cr>
+-- ]])
 
 vim.cmd('autocmd FileType dbout setlocal nofoldenable')
 vim.cmd('autocmd FileType mysql vnoremap <buffer> <CR> <Plug>(DBUI_ExecuteQuery)')
