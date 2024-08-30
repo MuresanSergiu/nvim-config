@@ -186,6 +186,16 @@ require('lspconfig').lua_ls.setup({
 })
 
 local lspconfig = require('lspconfig')
+lspconfig.pylsp.setup({
+    pylsp = {
+        plugins = {
+            pycodestyle = {
+                ignore = {'W391'},
+                maxLineLength = 100
+            }
+        }
+    }
+})
 lspconfig.emmet_language_server.setup({
     filetypes = { "html", "php" },
     init_options = {

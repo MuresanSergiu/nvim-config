@@ -23,6 +23,7 @@ set.showtabline = 0
 
 vim.g.mapleader = ' '
 vim.g.db_ui_execute_on_save = false
+vim.g.db_ui_use_nerd_fonts = true
 vim.g.ftplugin_sql_omni_key = '<C-S>'
 -- vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 vim.keymap.set('n', 'Q', '<nop>')
@@ -76,10 +77,14 @@ vim.keymap.set({'v', 'x'}, '@', function ()
 end, {})
 
 vim.cmd('ca S Subvert')
-vim.api.nvim_create_user_command('Build', '!rm extension.xpi; npx webpack && zip -r extension.xpi dist/ manifest.json && cp -f extension.xpi ~/Development/tor && cd collector/ && cargo run --bin scraper setup 8', {});
+vim.api.nvim_create_user_command('Build', '!rm extension.xpi; npx webpack && zip -r extension.xpi dist/ manifest.json && cp -f extension.xpi ~/Development/test', {});
 vim.api.nvim_create_user_command('W', 'w', {});
 vim.api.nvim_create_user_command('DBS', 'tabnew | DBUI', {})
-vim.api.nvim_del_user_command('EditQuery')
+
+-- I don't care if this throws
+pcall(function ()
+    vim.api.nvim_del_user_command('EditQuery')
+end)
 -- vim.keymap.set('v', '<leader>cc', ':s/_\\w/\\u&/g<CR>:let @/ = ""<CR>');
 
 -- this_is_a_test
