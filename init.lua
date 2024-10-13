@@ -25,6 +25,7 @@ vim.g.mapleader = ' '
 vim.g.db_ui_execute_on_save = false
 vim.g.db_ui_use_nerd_fonts = true
 vim.g.ftplugin_sql_omni_key = '<C-S>'
+vim.g.c_syntax_for_h = true
 -- vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 vim.keymap.set('n', 'Q', '<nop>')
 vim.keymap.set('i', '<Escape>', '<nop>')
@@ -53,9 +54,12 @@ vim.keymap.set({'c', 'i', 'n', 'x'}, '<Left>', '<nop>');
 vim.keymap.set({'c', 'i', 'n', 'x'}, '<Right>', '<nop>');
 vim.keymap.set({'c', 'i', 'n', 'x'}, '<Up>', '<nop>');
 vim.keymap.set({'c', 'i', 'n', 'x'}, '<Down>', '<nop>');
+vim.keymap.set({'n', 'x'}, 'H', '<nop>');
+vim.keymap.set({'n', 'x'}, 'L', '<nop>');
 
 vim.keymap.set('n', '<leader>/', ':let @/ = ""<CR>');
-vim.keymap.set('v', '<leader>sc', ':s/\\u/_\\l&/g<CR>:let @/ = ""<CR>');
+vim.keymap.set('v', '<leader>c', ':!sh<CR>');
+vim.keymap.set('v', '<leader>sc', ':s/\\u/_\\l&/g<_c_r>:let @/ = ""<_c_r>');
 
 -- For making macro execution extra fast...
 -- Took wayyy too long to figure this out but, remember that when executing a command you remain in the same mode you are in so macros execute differently
@@ -211,7 +215,7 @@ vim.keymap.set('i', '<CR>', function()
 end, { expr = true });
 
 --- CURL utility
-vim.keymap.set('x', '<leader>r', function()
+function curl()
     local vpos = vim.fn.getpos("v")
     -- local vstart = vim.fn.getpos("'<")
     local vstart = vpos[2]
@@ -260,13 +264,24 @@ vim.keymap.set('x', '<leader>r', function()
     if #body > 0 then
         curl = curl .. " -d " .. body
     end
+    curl = curl .. " 2>&1"
     print("Command curl is", curl)
-    return curl .. "<CR>:lua vim.api.nvim_win_set_cursor(0, {vim.fn.search('{', 'n'), 0})<CR>V:!jq<CR>"
-end, { expr = true })
+    return curl .. "<CR>" --:lua vim.api.nvim_win_set_cursor(0, {vim.fn.search('{', 'n'), 0})<CR>V:!jq<CR>"
+end
 
+vim.keymap.set('x', '<leader>r', curl, { expr = true })
 vim.keymap.set('n', '<leader>m', ':messages<CR>')
 vim.keymap.set('n', '<leader>cc', function()
 
 end)
+local generalSettingsGroup = vim.api.nvim_create_augroup('General settings', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = { '*.api' },
+    callback = function()
+        print('execing')
+        vim.keymap.set('x', '<CR>', curl, { expr = true })
+    end,
+    group = generalSettingsGroup,
+})
 
 
