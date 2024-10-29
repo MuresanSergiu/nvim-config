@@ -44,6 +44,15 @@ vim.keymap.set('v', '<S-Down>', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
 vim.keymap.set('v', '<S-Up>', ":m '<-2<CR>gv=gv")
 
+vim.keymap.set('n', '<M-h>', '<C-w><');
+vim.keymap.set('n', '<M-j>', '<C-w>+');
+vim.keymap.set('n', '<M-k>', '<C-w>-');
+vim.keymap.set('n', '<M-l>', '<C-w>>');
+vim.keymap.set('n', '<C-M-h>', '10<C-w><');
+vim.keymap.set('n', '<C-M-j>', '10<C-w>+');
+vim.keymap.set('n', '<C-M-k>', '10<C-w>-');
+vim.keymap.set('n', '<C-M-l>', '10<C-w>>');
+
 -- vim.keymap.set('n', '<M-Left>', '<C-o>');
 -- vim.keymap.set('n', '<M-Right>', '<C-i>');
 
