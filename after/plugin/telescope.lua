@@ -64,7 +64,7 @@ telescope.setup({
             -- treesitter = {enable = true, disable = {'typescript'}},
         },
         
-        -- extensions = { "fzf" }
+        extensions = { "fzf" }
     }
 })
--- telescope.load_extension("fzf")
+telescope.load_extension("fzf")

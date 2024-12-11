@@ -3,7 +3,7 @@ local lsp = require('lsp-zero')
 lsp.preset('recommended')
 
 lsp.ensure_installed({
-    'tsserver',
+    'ts_ls',
     'angularls',
     'rust_analyzer',
     'lua_ls',
@@ -97,14 +97,12 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set('n', 'K', function() vim.lsp.buf.hover() end, opts)
     vim.keymap.set('n', '<leader>cf', vim.lsp.buf.format, opts)
     vim.keymap.set({ 'n', 'x', 'v' }, '<leader>ca', function()
-        local row = vim.api.nvim_win_get_cursor(0)[1]
-        local params = vim.lsp.util.make_given_range_params({ row, 0 }, { row, 500 })
-        print(vim.inspect(params))
-        params.apply = true
-        vim.lsp.buf.code_action({
-            apply = true,
-        })
-        vim.defer_fn(function () vim.cmd('w') end, 2000)
+        -- local row = vim.api.nvim_win_get_cursor(0)[1]
+        -- local params = vim.lsp.util.make_given_range_params({ row, 0 }, { row, 500 })
+        -- print(vim.inspect(params))
+        -- params.apply = true
+        vim.lsp.buf.code_action()
+        -- vim.defer_fn(function () vim.cmd('w') end, 2000)
     end, opts)
     vim.keymap.set({ 'n', 'x', 'v' }, '<leader>ci', function()
         -- local diags = vim.diagnostic.get(0)
@@ -147,18 +145,15 @@ lsp.on_attach(function(client, bufnr)
         -- inspect(vim.lsp.get_active_clients()[1].server_capabilities)
         -- vim.lsp.buf_request_sync()
     end, opts)
-    vim.keymap.set('n', '<leader>e', function() vim.diagnostic.open_float() end, opts)
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
     vim.keymap.set('n', '<C-n>', function() vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR, wrap = true }) end)
-    vim.keymap.set('n', '<C-m>', function() vim.diagnostic.goto_next({ severity = { min = vim.diagnostic.severity.WARN }, wrap = true }) end)
+    vim.keymap.set('n', '<C-h>', function() vim.diagnostic.goto_next({ wrap = true }) end)
+    vim.keymap.set('n', '<leader>e', function() vim.diagnostic.open_float() end, opts)
     vim.keymap.set('n', '<leader>pe', function () vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR }) end, {})
     vim.keymap.set('n', '<leader>pw', function () vim.diagnostic.setqflist() end, {})
-    vim.keymap.set('n', '<leader>cn', ':cn<CR>', {})
-    vim.keymap.set('n', '<leader>cp', ':cp<CR>', {})
 end)
 
 require('lspconfig').lua_ls.setup({
-
     settings = {
         Lua = {
             runtime = {
@@ -204,20 +199,21 @@ lspconfig.emmet_language_server.setup({
     }
 })
 -- print(vim.inspect(capabilities))
-lspconfig.rust_analyzer.setup({
-    settings = {
-        ['rust-analyzer'] = {
-            checkOnSave = {
-                allFeatures = true,
-                overrideCommand = {
-                    'cargo', 'clippy', '--workspace', '--message-format=json',
-                    '--all-targets', '--all-features'
-                }
-            }
-        }
-    }
-})
+-- lspconfig.rust_analyzer.setup({
+--     settings = {
+--         ['rust-analyzer'] = {
+--             checkOnSave = {
+--                 allFeatures = true,
+--                 overrideCommand = {
+--                     'cargo', 'clippy', '--workspace', '--message-format=json',
+--                     '--all-targets', '--all-features'
+--                 }
+--             }
+--         }
+--     }
+-- })
 lsp.setup()
+
 --
 -- lspconfig.emmet_ls.setup({
 --     -- on_attach = on_attach,

@@ -11,6 +11,7 @@ set.cursorline = true
 set.nu = true
 set.relativenumber = true
 set.wrap = false
+-- set.shada = "NONE"
 -- set.guicursor = 'n-v-c-sm:block,i-ci-ve:ver40,r-cr-o:hor20'
 
 set.hlsearch = true
@@ -65,6 +66,7 @@ vim.keymap.set({'c', 'i', 'n', 'x'}, '<Up>', '<nop>');
 vim.keymap.set({'c', 'i', 'n', 'x'}, '<Down>', '<nop>');
 vim.keymap.set({'n', 'x'}, 'H', '<nop>');
 vim.keymap.set({'n', 'x'}, 'L', '<nop>');
+vim.keymap.set('n', '<CR>', '<nop>');
 
 vim.keymap.set('n', '<leader>/', ':let @/ = ""<CR>');
 vim.keymap.set('v', '<leader>c', ':!sh<CR>');
@@ -141,6 +143,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.filetype.add({
     pattern = {
         ['.*%.rest'] = 'json',
+        ['.*%.tpl'] = 'html',
     }
 })
 
