@@ -33,7 +33,7 @@ return require('packer').startup(function (use)
     use('tpope/vim-fugitive')
     use ({
         'VonHeikemen/lsp-zero.nvim',
-        branch = 'v2.x',
+        branch = 'v3.x',
         requires = {
             -- LSP Support
             {'neovim/nvim-lspconfig'},             -- Required
@@ -64,7 +64,7 @@ return require('packer').startup(function (use)
     use 'tpope/vim-surround'
     use 'tpope/vim-abolish'
     use 'tpope/vim-dadbod'
-    use 'kristijanhusak/vim-dadbod-completion'
+    -- use 'kristijanhusak/vim-dadbod-completion'
     use 'kristijanhusak/vim-dadbod-ui'
 
     -- Random themes if needed

@@ -1,4 +1,7 @@
 ---@diagnostic disable: missing-fields
+require('treesitter-context').setup({
+    enable = true
+})
 require('nvim-treesitter.configs').setup({
     -- A list of parser names, or "all" (the five listed parsers should always be installed)
     ensure_installed = { "c", "javascript", "typescript", "html", "css", "lua", "vim", "vimdoc", "query", "c", "php" },
@@ -14,6 +17,7 @@ require('nvim-treesitter.configs').setup({
     -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
     indent = {
         enable = true,
+        disable = { "html", "xml" }
     },
 
     highlight = {
@@ -24,11 +28,6 @@ require('nvim-treesitter.configs').setup({
         -- Instead of true it can also be a list of languages
         additional_vim_regex_highlighting = false,
     },
-    
-})
-
-
-require('nvim-treesitter.configs').setup({
     textobjects = {
         select = {
             enable = true,

@@ -10,7 +10,8 @@ require('gitsigns').setup({
         map('n', '<leader>gh', gs.preview_hunk)
         map('n', '<leader>gr', gs.reset_hunk)
         map('n', '<leader>gd', gs.diffthis)
-        map('n', '<leader>gc', function () gs.blame_line({ full = true }) end)
-        map('n', '<leader>gb', gs.toggle_current_line_blame)
+        map('n', '<C-Y>', function() gs.nav_hunk('next', { wrap = true }) end)
+        -- map('n', '<leader>gc', function () gs.blame_line({ full = true }) end)
+        -- map('n', '<leader>gb', gs.toggle_current_line_blame)
     end
 })

@@ -1,30 +1,55 @@
 local lsp = require('lsp-zero')
+-- lsp.preset('minimal')
 
-lsp.preset('recommended')
-
-lsp.ensure_installed({
-    'ts_ls',
-    'angularls',
-    'rust_analyzer',
-    'lua_ls',
+require('mason').setup({})
+require('mason-lspconfig').setup({
+    ensure_installed = {
+        'ts_ls',
+        'angularls',
+        'rust_analyzer',
+        'lua_ls',
+    },
+    handlers = {
+        lsp.default_setup,
+        lua_ls = function()
+            local lua_opts = lsp.nvim_lua_ls()
+            require('lspconfig').lua_ls.setup(lua_opts)
+        end,
+    },
 })
 
+-- local cmp = require('cmp')
+-- local cmp_mappings = lsp.defaults.cmp_mappings({
+--     ['<C-Space>'] = cmp.mapping.complete(),
+--     ['<CR>'] = cmp.mapping.confirm({ select = true }),
+-- })
 local cmp = require('cmp')
-local cmp_select = { behavior = cmp.SelectBehavior.Select }
-local cmp_mappings = lsp.defaults.cmp_mappings({
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+local cmp_format = lsp.cmp_format({details = true})
+cmp.setup({
+    formatting = cmp_format,
+    mapping = cmp.mapping.preset.insert({
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-d>'] = cmp.mapping.scroll_docs(4),
+    }),
+    snippet = {
+        expand = function(args)
+            require('luasnip').lsp_expand(args.body)
+        end,
+    },
 })
 
-cmp.setup.filetype({ 'mysql', 'pgsql', 'sql' }, {
-    sources = {
-        { name = 'vim-dadbod-completion' },
-        { name = 'buffer' }
-    }
-})
-lsp.setup_nvim_cmp({
-    mapping = cmp_mappings,
-})
+-- cmp.setup.filetype({ 'mysql', 'pgsql', 'sql' }, {
+--     sources = {
+--         { name = 'vim-dadbod-completion' },
+--         { name = 'buffer' }
+--     }
+-- })
+
+-- lsp.setup_nvim_cmp({
+--     mapping = cmp_mappings,
+-- })
 
 
 function get_current_line_diagnostics()
@@ -62,6 +87,7 @@ function get_current_line_diagnostics()
 
   return lsp_diagnostics
 end
+
 function range_from_selection (bufnr, mode)
   local start = vim.fn.getpos("v")
   local end_ = vim.fn.getpos(".")
@@ -88,8 +114,10 @@ function range_from_selection (bufnr, mode)
     ["end"] = { end_row, end_col - 1 },
   }
 end
+
 lsp.on_attach(function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
+    lsp.default_keymaps({buffer = bufnr})
 
     vim.keymap.set('n', 'gd', function() vim.lsp.buf.definition() end, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
@@ -153,7 +181,8 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set('n', '<leader>pw', function () vim.diagnostic.setqflist() end, {})
 end)
 
-require('lspconfig').lua_ls.setup({
+local lspconfig = require('lspconfig')
+lspconfig.lua_ls.setup({
     settings = {
         Lua = {
             runtime = {
@@ -180,7 +209,6 @@ require('lspconfig').lua_ls.setup({
     },
 })
 
-local lspconfig = require('lspconfig')
 lspconfig.pylsp.setup({
     pylsp = {
         plugins = {
@@ -192,7 +220,7 @@ lspconfig.pylsp.setup({
     }
 })
 lspconfig.emmet_language_server.setup({
-    filetypes = { "html", "php" },
+    filetypes = { "html", "php", "htmlangular" },
     init_options = {
         showSuggestionsAsSnippets = true,
         showAbbreviationSuggestions = false,
@@ -212,7 +240,7 @@ lspconfig.emmet_language_server.setup({
 --         }
 --     }
 -- })
-lsp.setup()
+-- lsp.setup()
 
 --
 -- lspconfig.emmet_ls.setup({

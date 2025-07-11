@@ -1,32 +1,49 @@
 require('plugins')
 
-local set = vim.opt
-set.tabstop = 4
-set.shiftwidth = 4
-set.softtabstop = 4
-set.expandtab = true
-set.autoindent = false
-set.smartindent = false
-set.cursorline = true
-set.nu = true
-set.relativenumber = true
-set.wrap = false
--- set.shada = "NONE"
--- set.guicursor = 'n-v-c-sm:block,i-ci-ve:ver40,r-cr-o:hor20'
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+vim.opt.expandtab = true
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+vim.opt.cursorline = true
+vim.opt.nu = true
+vim.opt.relativenumber = true
+vim.opt.wrap = false
+vim.opt.lazyredraw = true
+vim.opt.redrawtime = 10000
+vim.opt.maxmempattern = 20000
+vim.opt.synmaxcol = 300
+-- vim.opt.shada = "NONE"
+-- vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:ver40,r-cr-o:hor20'
 
-set.hlsearch = true
-set.incsearch = true
+vim.opt.hlsearch = true
+vim.opt.incsearch = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
-set.scrolloff = 8
-set.updatetime = 50
-set.colorcolumn = "160"
-set.showtabline = 0
+vim.opt.scrolloff = 8
+vim.opt.updatetime = 50
+vim.opt.colorcolumn = "160"
+vim.opt.showtabline = 0
+
+vim.opt.updatetime = 300
+vim.opt.timeoutlen = 500
+vim.opt.autoread = true
+vim.opt.autowrite = false
+vim.opt.undofile = true                            -- Persistent undo
+vim.opt.undodir = vim.fn.expand("~/.vim/undodir")  -- Undo directory
+
+vim.opt.iskeyword:append("-")
+vim.opt.path:append("**")                          -- include subdirectories in search
 
 vim.g.mapleader = ' '
 vim.g.db_ui_execute_on_save = false
 vim.g.db_ui_use_nerd_fonts = true
 vim.g.ftplugin_sql_omni_key = '<C-S>'
 vim.g.c_syntax_for_h = true
+
+--
 -- vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 vim.keymap.set('n', 'Q', '<nop>')
 vim.keymap.set('i', '<Escape>', '<nop>')
@@ -54,16 +71,22 @@ vim.keymap.set('n', '<C-M-j>', '10<C-w>+');
 vim.keymap.set('n', '<C-M-k>', '10<C-w>-');
 vim.keymap.set('n', '<C-M-l>', '10<C-w>>');
 
+-- Better indenting in visual mode
+vim.keymap.set("v", "<", "<gv", { desc = "Indent left and reselect" })
+vim.keymap.set("v", ">", ">gv", { desc = "Indent right and reselect" })
+vim.keymap.set("n", "<leader>rc", ":e ~/.config/nvim/init.lua<CR>", { desc = "Edit config" })
+
+
 -- vim.keymap.set('n', '<M-Left>', '<C-o>');
 -- vim.keymap.set('n', '<M-Right>', '<C-i>');
 
 vim.keymap.set({'c'}, '<C-k>', '<Up>');
 vim.keymap.set({'c'}, '<C-j>', '<Down>');
 
-vim.keymap.set({'c', 'i', 'n', 'x'}, '<Left>', '<nop>');
-vim.keymap.set({'c', 'i', 'n', 'x'}, '<Right>', '<nop>');
-vim.keymap.set({'c', 'i', 'n', 'x'}, '<Up>', '<nop>');
-vim.keymap.set({'c', 'i', 'n', 'x'}, '<Down>', '<nop>');
+vim.keymap.set({'i', 'n', 'x'}, '<Left>', '<nop>');
+vim.keymap.set({'i', 'n', 'x'}, '<Right>', '<nop>');
+vim.keymap.set({'i', 'n', 'x'}, '<Up>', '<nop>');
+vim.keymap.set({'i', 'n', 'x'}, '<Down>', '<nop>');
 vim.keymap.set({'n', 'x'}, 'H', '<nop>');
 vim.keymap.set({'n', 'x'}, 'L', '<nop>');
 vim.keymap.set('n', '<CR>', '<nop>');
@@ -287,6 +310,13 @@ vim.keymap.set('n', '<leader>cc', function()
 
 end)
 local generalSettingsGroup = vim.api.nvim_create_augroup('General settings', { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+    group = generalSettingsGroup,
+    callback = function()
+        vim.highlight.on_yank()
+    end
+})
+
 vim.api.nvim_create_autocmd('FileType', {
     pattern = { '*.api' },
     callback = function()
@@ -296,4 +326,8 @@ vim.api.nvim_create_autocmd('FileType', {
     group = generalSettingsGroup,
 })
 
-
+-- Create undo directory if it doesn't exist
+local undodir = vim.fn.expand("~/.vim/undodir")
+if vim.fn.isdirectory(undodir) == 0 then
+  vim.fn.mkdir(undodir, "p")
+end

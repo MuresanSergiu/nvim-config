@@ -31,7 +31,7 @@ dap.configurations.typescript = {
 dap.adapters.php = {
   type = 'executable',
   command = 'node',
-  args = { '/Users/sergiumuresan/Development/vscode-php-debug/out/phpDebug.js' }
+  args = { '/home/afterwind/Development/vscode-php-debug/out/phpDebug.js' }
 }
 dap.configurations.php = {
   {
