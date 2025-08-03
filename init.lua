@@ -1,5 +1,29 @@
-require('plugins')
+vim.pack.add({
+    'https://github.com/nvim-tree/nvim-web-devicons',
+    'https://github.com/nvim-lua/plenary.nvim',
+    'https://github.com/nvim-telescope/telescope.nvim',
+    'https://github.com/nvim-telescope/telescope-fzf-native.nvim',
 
+    'https://github.com/lewis6991/gitsigns.nvim',
+    'https://github.com/tpope/vim-fugitive',
+    'https://github.com/tpope/vim-surround',
+    'https://github.com/tpope/vim-abolish',
+    'https://github.com/tpope/vim-dadbod',
+    'https://github.com/kristijanhusak/vim-dadbod-ui',
+
+    'https://github.com/nvim-treesitter/nvim-treesitter',
+    'https://github.com/nvim-treesitter/nvim-treesitter-context',
+    'https://github.com/navarasu/onedark.nvim',
+    'https://github.com/echasnovski/mini.ai',
+    'https://github.com/numToStr/Comment.nvim',
+    'https://github.com/mfussenegger/nvim-dap',
+    'https://github.com/nvim-lualine/lualine.nvim',
+
+    'https://github.com/neovim/nvim-lspconfig',
+    'https://github.com/hrsh7th/nvim-cmp',
+    'https://github.com/hrsh7th/cmp-nvim-lsp',
+    'https://github.com/L3MON4D3/LuaSnip',
+})
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
@@ -14,6 +38,7 @@ vim.opt.lazyredraw = true
 vim.opt.redrawtime = 10000
 vim.opt.maxmempattern = 20000
 vim.opt.synmaxcol = 300
+vim.opt.signcolumn = 'yes:1'
 -- vim.opt.shada = "NONE"
 -- vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:ver40,r-cr-o:hor20'
 
@@ -94,6 +119,7 @@ vim.keymap.set('n', '<CR>', '<nop>');
 vim.keymap.set('n', '<leader>/', ':let @/ = ""<CR>');
 vim.keymap.set('v', '<leader>c', ':!sh<CR>');
 vim.keymap.set('v', '<leader>sc', ':s/\\u/_\\l&/g<_c_r>:let @/ = ""<_c_r>');
+
 
 -- For making macro execution extra fast...
 -- Took wayyy too long to figure this out but, remember that when executing a command you remain in the same mode you are in so macros execute differently
@@ -249,73 +275,13 @@ vim.keymap.set('i', '<CR>', function()
     return '<CR>'
 end, { expr = true });
 
---- CURL utility
-function curl()
-    local vpos = vim.fn.getpos("v")
-    -- local vstart = vim.fn.getpos("'<")
-    local vstart = vpos[2]
-    -- local vend = vim.fn.getpos("'>")
-    local vend, _ = unpack(vim.api.nvim_win_get_cursor(0))
-    if vend < vstart then
-        vend, vstart = vstart, vend
-    end
-    local n_lines = math.abs(vend - vstart) + 1
-    local lines = vim.api.nvim_buf_get_lines(0, vstart - 1, vend, false)
-
-    -- HOST
-    print(lines[1])
-    local host = lines[1]:gsub("?", "\\?")
-
-    local words = {}
-    words[1], words[2] = host:match("(.+) (.+)")
-
-    local method = "GET"
-    if words[1] ~= nil then
-        method = words[1]
-        host = words[2]
-    end
-
-    print("The result:", words[1], words[2])
-
-    -- HEADERS
-    local headers = "-H \"Content-Type: application/json\"";
-
-    local extra_commands = ''
-
-    -- BODY
-    local body = ""
-    for i = 2, n_lines do
-        lines[i] = lines[i]:gsub("^%s+", "")
-        if lines[i]:sub(1, 1) == '-' then
-            extra_commands = extra_commands .. ' ' .. lines[i]
-        else
-            body = body .. lines[i];
-        end
-    end
-    body = "'" .. body .. "'"
-
-    -- Command construction
-    local curl = "! curl -D - -X " .. method .. ' ' .. headers .. ' ' .. extra_commands .. ' -s "' .. host .. '"'
-    if #body > 0 then
-        curl = curl .. " -d " .. body
-    end
-    curl = curl .. " 2>&1"
-    print("Command curl is", curl)
-    return curl .. "<CR>" --:lua vim.api.nvim_win_set_cursor(0, {vim.fn.search('{', 'n'), 0})<CR>V:!jq<CR>"
-end
-
-vim.keymap.set('x', '<leader>r', curl, { expr = true })
-vim.keymap.set('n', '<leader>m', ':messages<CR>')
-vim.keymap.set('n', '<leader>cc', function()
-
-end)
 local generalSettingsGroup = vim.api.nvim_create_augroup('General settings', { clear = true })
-vim.api.nvim_create_autocmd("TextYankPost", {
-    group = generalSettingsGroup,
-    callback = function()
-        vim.highlight.on_yank()
-    end
-})
+-- vim.api.nvim_create_autocmd("TextYankPost", {
+--     group = generalSettingsGroup,
+--     callback = function()
+--         vim.highlight.on_yank()
+--     end
+-- })
 
 vim.api.nvim_create_autocmd('FileType', {
     pattern = { '*.api' },
