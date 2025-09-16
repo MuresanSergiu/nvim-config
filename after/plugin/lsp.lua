@@ -68,4 +68,5 @@ vim.lsp.enable('emmet_language_server')
 vim.lsp.enable('rust_analyzer');
 vim.lsp.enable('ts_ls');
 vim.lsp.enable('angularls');
-vim.lsp.enable('emmet_ls');
+vim.lsp.enable('cssls');
+vim.lsp.enable('intelephense');

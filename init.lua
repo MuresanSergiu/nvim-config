@@ -10,6 +10,7 @@ vim.pack.add({
     'https://github.com/tpope/vim-abolish',
     'https://github.com/tpope/vim-dadbod',
     'https://github.com/kristijanhusak/vim-dadbod-ui',
+    'https://github.com/kristijanhusak/vim-dadbod-completion',
 
     'https://github.com/nvim-treesitter/nvim-treesitter',
     'https://github.com/nvim-treesitter/nvim-treesitter-context',
@@ -39,6 +40,8 @@ vim.opt.redrawtime = 10000
 vim.opt.maxmempattern = 20000
 vim.opt.synmaxcol = 300
 vim.opt.signcolumn = 'yes:1'
+vim.opt.winborder = 'single'
+
 -- vim.opt.shada = "NONE"
 -- vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:ver40,r-cr-o:hor20'
 
@@ -68,6 +71,7 @@ vim.g.db_ui_use_nerd_fonts = true
 vim.g.ftplugin_sql_omni_key = '<C-S>'
 vim.g.c_syntax_for_h = true
 
+vim.fn.setreg("o", "_f:laOption<" .. string.char(3) .. "$i>", "c")
 --
 -- vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 vim.keymap.set('n', 'Q', '<nop>')
@@ -144,6 +148,8 @@ vim.cmd('ca S Subvert')
 vim.api.nvim_create_user_command('Build', '!rm extension.xpi; npx webpack && zip -r extension.xpi dist/ manifest.json && cp -f extension.xpi ~/Development/test', {});
 vim.api.nvim_create_user_command('W', 'w', {});
 vim.api.nvim_create_user_command('DBS', 'tabnew | DBUI', {})
+vim.api.nvim_create_user_command('TODO', 'vsplit | wincmd l | edit TODO', {})
+vim.api.nvim_create_user_command('TODOH', 'vsplit | wincmd l | edit ~/todo', {})
 
 -- I don't care if this throws
 pcall(function ()
@@ -168,6 +174,7 @@ end)
 --   nnoremap @ <cmd>execute "set ft= \| noautocmd norm! " . v:count1 . "@" . getcharstr() . " \| filetype detect"<cr>
 -- ]])
 
+vim.cmd('autocmd FileType sql,mysql,plsql lua require(\'cmp\').setup.buffer({ sources = {{ name = \'vim-dadbod-completion\' }} })');
 vim.cmd('autocmd FileType dbout setlocal nofoldenable')
 vim.cmd('autocmd FileType mysql vnoremap <buffer> <CR> <Plug>(DBUI_ExecuteQuery)')
 vim.cmd('autocmd FileType sql vnoremap <buffer> <CR> <Plug>(DBUI_ExecuteQuery)')

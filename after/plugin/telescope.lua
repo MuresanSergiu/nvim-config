@@ -2,6 +2,9 @@ local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>pl', function() builtin.oldfiles({
     cwd_only = true,
 }) end, {})
+vim.keymap.set('n', '<C-l>', function() builtin.oldfiles({
+    cwd_only = true,
+}) end, {})
 vim.keymap.set({'n', 'i', 's', 'x'}, '<C-p>', function() builtin.git_files({ show_untracked = true }) end, {})
 vim.keymap.set('n', '<leader>pp', function() builtin.git_files({ show_untracked = true }) end, {})
 vim.keymap.set('n', '<leader>pf', function() builtin.find_files({ no_ignore = true, hidden = true }) end, {})
@@ -13,6 +16,7 @@ vim.keymap.set('n', '<leader>ff', builtin.grep_string, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.keymap.set("n", "<leader>fr", builtin.resume, { noremap = true, silent = true, desc = "Resume", })
+vim.keymap.set('n', "<leader>gc", builtin.git_commits, {})
 
 local previewers = require("telescope.previewers")
 local Job = require("plenary.job")
@@ -63,8 +67,27 @@ telescope.setup({
         preview = {
             -- treesitter = {enable = true, disable = {'typescript'}},
         },
+
         
         extensions = { "fzf" }
-    }
+    },
+    pickers = {
+        git_commits = {
+            git_command = {
+                'git',
+                'log',
+                '--pretty=format:%h %ad | %s%d [%an]',
+                '--date=format:%F %H:%m'
+            }
+        },
+        git_bcommits = {
+            git_command = {
+                'git',
+                'log',
+                '--pretty=format:%h %ad | %s%d [%an]',
+                '--date=format:%F %H:%m'
+            }
+        }
+    },
 })
 telescope.load_extension("fzf")
