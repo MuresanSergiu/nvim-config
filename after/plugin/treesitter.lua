@@ -1,6 +1,7 @@
 ---@diagnostic disable: missing-fields
 require('treesitter-context').setup({
-    enable = true
+    enable = true,
+    max_lines = 5,
 })
 require('nvim-treesitter.configs').setup({
     -- A list of parser names, or "all" (the five listed parsers should always be installed)

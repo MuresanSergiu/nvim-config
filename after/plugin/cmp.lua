@@ -1,5 +1,8 @@
 local cmp = require('cmp')
 cmp.setup({
+    completion = {
+        completeopt = 'menu,menuone,noinsert',
+    },
     snippet = {
         expand = function(args)
             require('luasnip').lsp_expand(args.body)
@@ -7,7 +10,10 @@ cmp.setup({
     },
     mapping = cmp.mapping.preset.insert({
         ['<C-Space>'] = cmp.mapping.complete(),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        ['<CR>'] = cmp.mapping.confirm({
+            select = true,
+            behavior = cmp.ConfirmBehavior.Insert
+        }),
         ['<C-u>'] = cmp.mapping.scroll_docs(-4),
         ['<C-d>'] = cmp.mapping.scroll_docs(4),
     }),

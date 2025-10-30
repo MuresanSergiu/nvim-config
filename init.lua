@@ -62,7 +62,7 @@ vim.opt.autowrite = false
 vim.opt.undofile = true                            -- Persistent undo
 vim.opt.undodir = vim.fn.expand("~/.vim/undodir")  -- Undo directory
 
-vim.opt.iskeyword:append("-")
+-- vim.opt.iskeyword:append("-")
 vim.opt.path:append("**")                          -- include subdirectories in search
 
 vim.g.mapleader = ' '
