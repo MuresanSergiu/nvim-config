@@ -75,7 +75,7 @@ vim.fn.setreg("o", "_f:laOption<" .. string.char(3) .. "$i>" .. string.char(3) .
 --
 -- vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 vim.keymap.set('n', 'Q', '<nop>')
-vim.keymap.set('n', 'wq:', '<nop>')
+-- vim.keymap.set('n', 'wq:', '<nop>')
 vim.keymap.set('i', '<Escape>', '<nop>')
 vim.keymap.set('v', '<Escape>', '<nop>')
 vim.keymap.set('n', '<C-s>', ':w<CR>')
