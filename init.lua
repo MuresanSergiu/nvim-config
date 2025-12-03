@@ -71,10 +71,11 @@ vim.g.db_ui_use_nerd_fonts = true
 vim.g.ftplugin_sql_omni_key = '<C-S>'
 vim.g.c_syntax_for_h = true
 
-vim.fn.setreg("o", "_f:laOption<" .. string.char(3) .. "$i>", "c")
+vim.fn.setreg("o", "_f:laOption<" .. string.char(3) .. "$i>" .. string.char(3) .. "j", "c")
 --
 -- vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 vim.keymap.set('n', 'Q', '<nop>')
+vim.keymap.set('n', 'wq:', '<nop>')
 vim.keymap.set('i', '<Escape>', '<nop>')
 vim.keymap.set('v', '<Escape>', '<nop>')
 vim.keymap.set('n', '<C-s>', ':w<CR>')
@@ -127,13 +128,13 @@ vim.keymap.set('v', '<leader>sc', ':s/\\u/_\\l&/g<_c_r>:let @/ = ""<_c_r>');
 
 -- For making macro execution extra fast...
 -- Took wayyy too long to figure this out but, remember that when executing a command you remain in the same mode you are in so macros execute differently
-vim.keymap.set('n', '@', function ()
-    local buf = vim.api.nvim_get_current_buf()
-    local ft = vim.filetype.match({ buf = buf })
-    vim.bo.filetype = ""
-    vim.cmd("noautocmd norm! " .. (vim.v.count or 1) .. "@" .. vim.fn.getcharstr())
-    vim.bo.filetype = ft
-end, {})
+-- vim.keymap.set('n', '@', function ()
+--     local buf = vim.api.nvim_get_current_buf()
+--     local ft = vim.filetype.match({ buf = buf })
+--     vim.bo.filetype = ""
+--     vim.cmd("noautocmd norm! " .. (vim.v.count or 1) .. "@" .. vim.fn.getcharstr())
+--     vim.bo.filetype = ft
+-- end, {})
 vim.keymap.set({'v', 'x'}, '@', function ()
     local buf = vim.api.nvim_get_current_buf()
     local ft = vim.filetype.match({ buf = buf })
