@@ -3,9 +3,9 @@ require('treesitter-context').setup({
     enable = true,
     max_lines = 5,
 })
-require('nvim-treesitter.configs').setup({
+require('nvim-treesitter.config').setup({
     -- A list of parser names, or "all" (the five listed parsers should always be installed)
-    ensure_installed = { "c", "javascript", "typescript", "html", "css", "lua", "vim", "vimdoc", "query", "c", "php" },
+    ensure_installed = { "c", "javascript", "typescript", "html", "css", "lua", "vim", "vimdoc", "query", "c", "php", "rust" },
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
@@ -81,4 +81,8 @@ require('nvim-treesitter.configs').setup({
             include_surrounding_whitespace = true,
         },
     },
+})
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = { "c", "javascript", "typescript", "html", "css", "lua", "vim", "vimdoc", "query", "c", "php", "rust" },
+    callback = function() vim.treesitter.start() end,
 })

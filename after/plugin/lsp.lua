@@ -70,3 +70,4 @@ vim.lsp.enable('ts_ls');
 vim.lsp.enable('angularls');
 vim.lsp.enable('cssls');
 vim.lsp.enable('intelephense');
+vim.lsp.enable('clangd');

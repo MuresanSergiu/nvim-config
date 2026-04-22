@@ -12,7 +12,7 @@ vim.pack.add({
     'https://github.com/kristijanhusak/vim-dadbod-ui',
     'https://github.com/kristijanhusak/vim-dadbod-completion',
 
-    'https://github.com/nvim-treesitter/nvim-treesitter',
+    { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
     'https://github.com/nvim-treesitter/nvim-treesitter-context',
     'https://github.com/navarasu/onedark.nvim',
     'https://github.com/echasnovski/mini.ai',
