@@ -56,7 +56,7 @@ vim.lsp.config('pylsp', {
     }
 })
 vim.lsp.config('emmet_language_server', {
-    filetypes = { "html", "php", "htmlangular" },
+    filetypes = { "html", "htmlangular" },
     init_options = {
         showSuggestionsAsSnippets = true,
         showAbbreviationSuggestions = false,

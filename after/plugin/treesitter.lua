@@ -3,9 +3,10 @@ require('treesitter-context').setup({
     enable = true,
     max_lines = 5,
 })
+require('nvim-treesitter').install({ "c", "javascript", "typescript", "html", "css", "lua", "vim", "vimdoc", "query", "c", "php", "rust", "sql" })
 require('nvim-treesitter.config').setup({
     -- A list of parser names, or "all" (the five listed parsers should always be installed)
-    ensure_installed = { "c", "javascript", "typescript", "html", "css", "lua", "vim", "vimdoc", "query", "c", "php", "rust" },
+    ensure_installed = { "c", "javascript", "typescript", "html", "css", "lua", "vim", "vimdoc", "query", "c", "php", "rust", "mysql", "sql", "pgsql" },
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
@@ -83,6 +84,9 @@ require('nvim-treesitter.config').setup({
     },
 })
 vim.api.nvim_create_autocmd('FileType', {
-    pattern = { "c", "javascript", "typescript", "html", "css", "lua", "vim", "vimdoc", "query", "c", "php", "rust" },
-    callback = function() vim.treesitter.start() end,
+    pattern = { "c", "javascript", "typescript", "html", "htmlangular", "css", "scss", "lua", "vim", "vimdoc", "query", "c", "php", "rust", "git", "mysql", "sql", "pgsql" },
+    callback = function()
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        vim.treesitter.start()
+    end,
 })
