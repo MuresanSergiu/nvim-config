@@ -62,6 +62,11 @@ vim.lsp.config('emmet_language_server', {
         showAbbreviationSuggestions = false,
     }
 })
+vim.lsp.config('ts_ls', {
+    cmd = {'typescript-language-server', '--stdio'},
+    root_dir = vim.fs.dirname(vim.fs.find({'angular.json', 'package.json'}, { upward = true })[1]),
+})
+
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('pylsp')
 vim.lsp.enable('emmet_language_server')
