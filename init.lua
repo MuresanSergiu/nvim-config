@@ -126,7 +126,7 @@ vim.keymap.set('v', '<leader>c', ':!sh<CR>');
 vim.keymap.set('v', '<leader>sc', ':s/\\u/_\\l&/g<_c_r>:let @/ = ""<_c_r>');
 
 vim.keymap.set({"n", "v", "x"}, "<leader>t", "gc", { remap = true })
-vim.keymap.set({"n", "v", "x"}, "<leader>tt", "gcc", { remap = true })
+vim.keymap.set({"n"}, "<leader>tt", "gcc", { remap = true })
 
 -- For making macro execution extra fast...
 -- Took wayyy too long to figure this out but, remember that when executing a command you remain in the same mode you are in so macros execute differently
