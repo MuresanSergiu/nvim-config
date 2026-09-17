@@ -16,7 +16,7 @@ vim.pack.add({
     'https://github.com/nvim-treesitter/nvim-treesitter-context',
     'https://github.com/navarasu/onedark.nvim',
     'https://github.com/echasnovski/mini.ai',
-    'https://github.com/numToStr/Comment.nvim',
+    -- 'https://github.com/numToStr/Comment.nvim',
     'https://github.com/mfussenegger/nvim-dap',
     'https://github.com/nvim-lualine/lualine.nvim',
 
@@ -113,10 +113,10 @@ vim.keymap.set("n", "<leader>rc", ":e ~/.config/nvim/init.lua<CR>", { desc = "Ed
 vim.keymap.set({'c'}, '<C-k>', '<Up>');
 vim.keymap.set({'c'}, '<C-j>', '<Down>');
 
-vim.keymap.set({'i', 'n', 'x'}, '<Left>', '<nop>');
-vim.keymap.set({'i', 'n', 'x'}, '<Right>', '<nop>');
-vim.keymap.set({'i', 'n', 'x'}, '<Up>', '<nop>');
-vim.keymap.set({'i', 'n', 'x'}, '<Down>', '<nop>');
+-- vim.keymap.set({'i', 'n', 'x'}, '<Left>', '<nop>');
+-- vim.keymap.set({'i', 'n', 'x'}, '<Right>', '<nop>');
+-- vim.keymap.set({'i', 'n', 'x'}, '<Up>', '<nop>');
+-- vim.keymap.set({'i', 'n', 'x'}, '<Down>', '<nop>');
 vim.keymap.set({'n', 'x'}, 'H', '<nop>');
 vim.keymap.set({'n', 'x'}, 'L', '<nop>');
 vim.keymap.set('n', '<CR>', '<nop>');
@@ -125,6 +125,8 @@ vim.keymap.set('n', '<leader>/', ':let @/ = ""<CR>');
 vim.keymap.set('v', '<leader>c', ':!sh<CR>');
 vim.keymap.set('v', '<leader>sc', ':s/\\u/_\\l&/g<_c_r>:let @/ = ""<_c_r>');
 
+vim.keymap.set({"n", "v", "x"}, "<leader>t", "gc", { remap = true })
+vim.keymap.set({"n", "v", "x"}, "<leader>tt", "gcc", { remap = true })
 
 -- For making macro execution extra fast...
 -- Took wayyy too long to figure this out but, remember that when executing a command you remain in the same mode you are in so macros execute differently
@@ -148,6 +150,8 @@ end, {})
 vim.cmd('ca S Subvert')
 vim.api.nvim_create_user_command('Build', '!rm extension.xpi; npx webpack && zip -r extension.xpi dist/ manifest.json && cp -f extension.xpi ~/Development/test', {});
 vim.api.nvim_create_user_command('W', 'w', {});
+vim.api.nvim_create_user_command('Wq', 'wq', {});
+vim.api.nvim_create_user_command('WQ', 'wq', {});
 vim.api.nvim_create_user_command('DBS', 'tabnew | DBUI', {})
 vim.api.nvim_create_user_command('TODO', 'vsplit | wincmd l | edit TODO', {})
 vim.api.nvim_create_user_command('TODOH', 'vsplit | wincmd l | edit ~/todo', {})
@@ -176,6 +180,8 @@ end)
 -- ]])
 
 vim.cmd('autocmd FileType sql,mysql,plsql lua require(\'cmp\').setup.buffer({ sources = {{ name = \'vim-dadbod-completion\' }} })');
+vim.cmd('autocmd FileType sql,mysql,plsql lua vim.bo.commentstring = "-- %s"');
+vim.cmd('autocmd FileType php lua vim.bo.commentstring = "// %s"');
 vim.cmd('autocmd FileType dbout setlocal nofoldenable')
 vim.cmd('autocmd FileType mysql vnoremap <buffer> <CR> <Plug>(DBUI_ExecuteQuery)')
 vim.cmd('autocmd FileType sql vnoremap <buffer> <CR> <Plug>(DBUI_ExecuteQuery)')

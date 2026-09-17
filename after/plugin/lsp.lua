@@ -49,8 +49,7 @@ vim.lsp.config('pylsp', {
     pylsp = {
         plugins = {
             pycodestyle = {
-                ignore = {'W391'},
-                maxLineLength = 100
+                ignore = {'W391'}, maxLineLength = 100
             }
         }
     }
@@ -66,6 +65,28 @@ vim.lsp.config('ts_ls', {
     cmd = {'typescript-language-server', '--stdio'},
     root_dir = vim.fs.dirname(vim.fs.find({'angular.json', 'package.json'}, { upward = true })[1]),
 })
+vim.lsp.config('jdtls', {
+    root_markers = { 'plugin.xml', "mvnw", "gradlew", "settings.gradle", "settings.gradle.kts", ".git" },
+    -- cmd = {
+    --   "java",
+    --   "--enable-native-access=ALL-UNNAMED",
+    --   "-Declipse.application=org.eclipse.jdt.ls.core.id1",
+    -- }
+});
+
+vim.lsp.config("rust_analyzer", {
+    settings = {
+        ["rust-analyzer"] = {
+            check = {
+                command = "clippy",
+                extraArgs = {
+                    "--",
+                    "-W", "clippy::pedantic",
+                },
+            },
+        },
+    },
+})
 
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('pylsp')
@@ -76,3 +97,4 @@ vim.lsp.enable('angularls');
 vim.lsp.enable('cssls');
 vim.lsp.enable('intelephense');
 vim.lsp.enable('clangd');
+vim.lsp.enable('jdtls');

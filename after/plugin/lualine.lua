@@ -22,7 +22,7 @@ require('lualine').setup {
         lualine_b = {'branch', 'diff', 'diagnostics'},
         lualine_c = {'filename', '%-0.50F'},
         lualine_x = {'filesize', 'filetype'},
-        lualine_y = {'progress'},
+        lualine_y = {'progress', 'searchcount'},
         lualine_z = {'location'}
     },
     inactive_sections = {
